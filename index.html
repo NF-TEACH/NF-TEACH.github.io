@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>אינדקס הכלים שלי</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body class="p-6 sm:p-10">
+
+    <div class="max-w-4xl mx-auto">
+        <header class="flex justify-between items-center mb-12 sm:mb-16 fade-in-slide-up">
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900">הכלים של NF</h1>
+            <a href="#" class="text-slate-400 hover:text-slate-600 transition" title="הורד את כל הכלים כ-ZIP (בקרוב)">
+                <i class="fa-solid fa-circle-down text-3xl"></i>
+            </a>
+        </header>
+
+        <main>
+            <p class="text-lg text-slate-600 mb-10 fade-in-slide-up" style="animation-delay: 100ms;">ברוכים הבאים לאינדקס הפרויקטים האינטראקטיביים שבניתי.</p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Project Chimera -->
+                <a href="tools/chimera-ccgen.html" class="tool-card fade-in-slide-up" style="animation-delay: 200ms;">
+                    <button class="download-btn" data-url="tools/chimera-ccgen.html" title="הורד קובץ HTML"><i class="fa-solid fa-download"></i></button>
+                    <span class="tag" style="background-color: #e0f2fe; color: #0284c7;">עיצוב עתידני</span>
+                    <h2 class="text-xl font-bold text-slate-800 mb-1">Project Chimera</h2><p class="text-sm text-slate-500">מחולל כרטיסים</p>
+                </a>
+                <!-- Password Generator -->
+                <a href="tools/password-gen.html" class="tool-card fade-in-slide-up" style="animation-delay: 300ms;">
+                    <button class="download-btn" data-url="tools/password-gen.html" title="הורד קובץ HTML"><i class="fa-solid fa-download"></i></button>
+                    <span class="tag" style="background-color: #dcfce7; color: #16a34a;">כלי עזר</span>
+                    <h2 class="text-xl font-bold text-slate-800 mb-1">מחולל סיסמאות</h2><p class="text-sm text-slate-500">אבטחה ופרטיות</p>
+                </a>
+                <!-- Mandala Generator -->
+                <a href="tools/mandala-gen.html" class="tool-card fade-in-slide-up" style="animation-delay: 400ms;">
+                    <button class="download-btn" data-url="tools/mandala-gen.html" title="הורד קובץ HTML"><i class="fa-solid fa-download"></i></button>
+                    <span class="tag" style="background-color: #f3e8ff; color: #9333ea;">יצירה דיגיטלית</span>
+                    <h2 class="text-xl font-bold text-slate-800 mb-1">יוצר מנדלות</h2><p class="text-sm text-slate-500">ציור אינטראקטיבי</p>
+                </a>
+                <!-- Matrix Injector -->
+                <a href="tools/matrix-injector.html" class="tool-card fade-in-slide-up" style="animation-delay: 500ms;">
+                    <button class="download-btn" data-url="tools/matrix-injector.html" title="הורד קובץ HTML"><i class="fa-solid fa-download"></i></button>
+                    <span class="tag" style="background-color: #ccfbf1; color: #0d9488;">סימולטור</span>
+                    <h2 class="text-xl font-bold text-slate-800 mb-1">Matrix Injector</h2><p class="text-sm text-slate-500">חווית טרמינל</p>
+                </a>
+                <!-- Time Tracker -->
+                <a href="tools/time-tracker.html" class="tool-card fade-in-slide-up" style="animation-delay: 600ms;">
+                    <button class="download-btn" data-url="tools/time-tracker.html" title="הורד קובץ HTML"><i class="fa-solid fa-download"></i></button>
+                    <span class="tag" style="background-color: #e0e7ff; color: #4f46e5;">אפליקציה</span>
+                    <h2 class="text-xl font-bold text-slate-800 mb-1">שעון נוכחות</h2><p class="text-sm text-slate-500">ניהול משימות וזמן</p>
+                </a>
+            </div>
+        </main>
+        
+        <footer class="text-center mt-16 text-gray-500 fade-in-slide-up" style="animation-delay: 700ms;">
+            <p>© 2025 | NF TEACH</p>
+        </footer>
+    </div>
+
+    <!-- ==== Modal for Time Tracker Info ==== -->
+    <div id="infoModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center p-4 z-50 opacity-0 invisible transition-opacity duration-300">
+        <div id="modalOverlay" class="absolute inset-0"></div>
+        <div id="modalContent" class="relative bg-white text-slate-900 rounded-lg shadow-xl w-full max-w-md p-6 transform scale-95 transition-transform duration-300">
+            <div class="text-center">
+                <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 mb-4">
+                    <i class="fa-solid fa-circle-info text-2xl text-blue-600"></i>
+                </div>
+                <h3 class="text-lg leading-6 font-medium text-gray-900">מידע חשוב</h3>
+                <div class="mt-2">
+                    <p class="text-sm text-gray-600">
+                        סיסמת ברירת המחדל לכניסת מנהל במערכת שעון הנוכחות היא:
+                    </p>
+                    <p class="font-mono text-lg bg-gray-100 text-blue-800 rounded px-2 py-1 inline-block my-2">admin123</p>
+                </div>
+            </div>
+            <div class="mt-5 sm:mt-6">
+                <button id="modalConfirmBtn" type="button" class="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:text-sm">
+                    הבנתי, המשך
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==== Loading Overlay ==== -->
+    <div id="loadingOverlay" class="fixed inset-0 bg-white bg-opacity-70 backdrop-blur-sm flex flex-col items-center justify-center p-4 z-50 opacity-0 invisible transition-opacity duration-300">
+        <div class="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
+        <p class="mt-4 text-lg font-medium text-slate-700">טוען יישום...</p>
+    </div>
+
+    <script>
+        // --- References to Elements ---
+        const downloadButtons = document.querySelectorAll('.download-btn');
+        const toolCards = document.querySelectorAll('a.tool-card');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+
+        // --- Download Buttons Logic ---
+        downloadButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const url = button.dataset.url;
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = url.split('/').pop();
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            });
+        });
+
+        // --- Loading Overlay and Navigation Logic ---
+        toolCards.forEach(card => {
+            // This logic applies to all cards EXCEPT the time tracker, which has a special modal
+            if (card.getAttribute('href') !== 'tools/time-tracker.html') {
+                card.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    loadingOverlay.classList.add('visible');
+                    setTimeout(() => {
+                        window.location.href = card.href;
+                    }, 1200); // 1.2 seconds for the pose
+                });
+            }
+        });
+
+        // --- Modal Logic for Time Tracker ---
+        const timeTrackerCard = document.querySelector('a[href="tools/time-tracker.html"]');
+        if (timeTrackerCard) {
+            const infoModal = document.getElementById('infoModal');
+            const modalContent = document.getElementById('modalContent');
+            const modalOverlay = document.getElementById('modalOverlay');
+            const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+
+            function showInfoModal() {
+                infoModal.classList.add('visible');
+            }
+
+            function hideInfoModal() {
+                infoModal.classList.remove('visible');
+            }
+
+            timeTrackerCard.addEventListener('click', (event) => {
+                event.preventDefault(); 
+                showInfoModal();
+            });
+
+            modalConfirmBtn.addEventListener('click', () => {
+                hideInfoModal();
+                // After closing the modal, show the loading overlay
+                loadingOverlay.classList.add('visible');
+                setTimeout(() => {
+                    window.location.href = timeTrackerCard.href;
+                }, 1200);
+            });
+
+            modalOverlay.addEventListener('click', hideInfoModal);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CCGen - Project Chimera 💎</title>
+    
+    <!-- Tailwind CSS (via Play CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Orbitron & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        orbitron: ['Orbitron', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+
+    <style>
+        body { background-color: #0a0a0f; background-image: radial-gradient(circle at 10% 10%, rgba(0, 170, 255, 0.1), transparent 30%), radial-gradient(circle at 90% 80%, rgba(138, 43, 226, 0.1), transparent 30%); }
+        #card-visual { transform-style: preserve-3d; transition: transform 0.1s linear; }
+        .card-glow { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.2), transparent 50%); opacity: 0; transition: opacity 0.3s ease; }
+        .card-sheen { position: absolute; top: 0; right: 0; bottom: 0; left: 0; background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.1), transparent 70%); background-size: 200% 100%; animation: sheen 5s infinite linear; }
+        @keyframes sheen { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+        .text-emboss { text-shadow: 0 1px 0 rgba(0,0,0,0.4); }
+        .copy-btn-small { opacity: 0; transition: opacity 0.2s ease-in-out; }
+        .history-item:hover .copy-btn-small { opacity: 1; }
+        #cardTypeModal, #toast { transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out, visibility 0.3s; }
+        #cardTypeModal.invisible { transform: scale(0.95); }
+        #toast.invisible { transform: translateY(-150%); }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4 font-sans text-slate-300">
+
+    <div class="w-full max-w-xl mx-auto">
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-orbitron font-bold bg-gradient-to-r from-sky-400 to-blue-500 bg-clip-text text-transparent">Project Chimera</h1>
+            <p class="text-slate-500 mt-2">Next-Gen Development Card Console</p>
+        </div>
+        
+        <div id="card-container" class="perspective-[1000px] mb-8">
+            <div id="card-visual" class="relative aspect-[1.586] w-full max-w-lg mx-auto bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-2xl shadow-2xl shadow-black/50 p-6 flex flex-col justify-between overflow-hidden">
+                <div class="card-glow"></div>
+                <div class="card-sheen"></div>
+                <div class="flex justify-between items-start">
+                    <img src="https://i.imgur.com/gim2V76.png" alt="Chip" class="w-12 h-auto mix-blend-lighten opacity-80">
+                    <div id="card-brand-logo" class="text-4xl text-white/80"><i class="fa-brands fa-cc-visa"></i></div>
+                </div>
+                <div class="text-white text-emboss">
+                    <p id="card-display-number" class="font-orbitron text-2xl md:text-3xl tracking-widest mb-4">XXXX XXXX XXXX XXXX</p>
+                    <div class="flex justify-between text-sm">
+                        <div><p class="text-slate-400 text-xs">CARD HOLDER</p><p class="font-medium tracking-wider">CYBER SEC DEV</p></div>
+                        <div><p class="text-slate-400 text-xs text-right">EXPIRES</p><p id="card-display-exp" class="font-medium tracking-wider">MM/YY</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-slate-900/50 border border-slate-800 rounded-xl p-6 mb-6">
+            <form id="generatorForm" class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end" novalidate>
+                <div>
+                    <label class="block mb-2 text-xs font-medium text-slate-400">CARD TYPE</label>
+                    <button type="button" id="cardTypeBtn" class="w-full flex items-center justify-between bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-left focus:ring-2 focus:ring-sky-500 transition">
+                        <span id="cardTypeName" class="font-medium">Visa</span><i class="fa-solid fa-chevron-down text-slate-500 text-xs"></i>
+                    </button>
+                </div>
+                <div>
+                    <label for="quantity" class="block mb-2 text-xs font-medium text-slate-400">QUANTITY</label>
+                    <input type="number" id="quantity" value="5" min="1" max="20" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 focus:ring-2 focus:ring-sky-500 transition">
+                </div>
+                <button type="submit" id="generateBtn" class="w-full bg-sky-500 hover:bg-sky-600 text-slate-900 font-bold py-2 px-4 rounded-lg flex items-center justify-center transition-all duration-200 transform active:scale-95 disabled:opacity-50">
+                    <i class="fa-solid fa-bolt mr-2"></i> GENERATE
+                </button>
+            </form>
+        </div>
+
+        <div>
+            <h2 class="text-slate-500 text-sm font-medium mb-3 px-2">GENERATION LOG</h2>
+            <div id="historyList" class="space-y-2 max-h-[25vh] overflow-y-auto pr-2"></div>
+        </div>
+    </div>
+    
+    <div id="cardTypeModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 opacity-0 invisible">
+        <div class="bg-slate-800 border border-slate-700 rounded-xl shadow-lg w-full max-w-sm">
+            <div class="flex items-center justify-between p-4 border-b border-slate-700">
+                <h3 class="text-lg font-semibold text-white">Select Card Type</h3><button id="closeModalBtn" class="text-slate-400 hover:text-white text-2xl">&times;</button>
+            </div>
+            <div id="modal-options" class="p-4 grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+        </div>
+    </div>
+
+    <div id="toast" class="fixed top-5 right-1/2 translate-x-1/2 bg-red-800/80 backdrop-blur border border-red-600 text-white text-sm py-3 px-5 rounded-lg shadow-lg z-50 invisible opacity-0">
+        <i class="fa-solid fa-circle-exclamation mr-2"></i>
+        <span id="toast-message">Error message here.</span>
+    </div>
+
+    <script>
+        const cardTypes = {
+            visa: { name: 'Visa', pattern: '4###############', icon: '<i class="fa-brands fa-cc-visa"></i>' },
+            mastercard: { name: 'Mastercard', pattern: '5[1-5]##############', icon: '<i class="fa-brands fa-cc-mastercard"></i>' },
+            amex: { name: 'American Express', pattern: '3[47]#############', icon: '<i class="fa-brands fa-cc-amex"></i>' },
+            discover: { name: 'Discover', pattern: '6011############', icon: '<i class="fa-brands fa-cc-discover"></i>' }
+        };
+
+        let currentCardType = 'visa', mouseRotateX = 0, mouseRotateY = 0, scrollRotateX = 0;
+
+        const form = document.getElementById('generatorForm'),
+              generateBtn = document.getElementById('generateBtn'),
+              historyList = document.getElementById('historyList'),
+              cardTypeBtn = document.getElementById('cardTypeBtn'),
+              cardTypeName = document.getElementById('cardTypeName'),
+              modal = document.getElementById('cardTypeModal'),
+              closeModalBtn = document.getElementById('closeModalBtn'),
+              modalOptions = document.getElementById('modal-options'),
+              cardContainer = document.getElementById('card-container'),
+              cardVisual = document.getElementById('card-visual'),
+              cardBrandLogo = document.getElementById('card-brand-logo'),
+              cardDisplayNumber = document.getElementById('card-display-number'),
+              cardDisplayExp = document.getElementById('card-display-exp'),
+              cardGlow = cardVisual.querySelector('.card-glow'),
+              quantityInput = document.getElementById('quantity'),
+              toast = document.getElementById('toast'),
+              toastMessage = document.getElementById('toast-message');
+
+        const applyCardTransform = () => cardVisual.style.transform = `rotateX(${scrollRotateX + mouseRotateX}deg) rotateY(${mouseRotateY}deg)`;
+
+        cardContainer.addEventListener('mousemove', e => {
+            const rect = cardContainer.getBoundingClientRect(), x = e.clientX - rect.left, y = e.clientY - rect.top, { width, height } = rect;
+            mouseRotateX = ((y / height) - 0.5) * -20;
+            mouseRotateY = ((x / width) - 0.5) * 20;
+            applyCardTransform();
+            const glowX = (x / width) * 100, glowY = (y / height) * 100;
+            cardGlow.style.background = `radial-gradient(circle at ${glowX}% ${glowY}%, rgba(255, 255, 255, 0.2), transparent 50%)`;
+            cardGlow.style.opacity = '1';
+        });
+
+        cardContainer.addEventListener('mouseleave', () => {
+            mouseRotateX = 0; mouseRotateY = 0; applyCardTransform(); cardGlow.style.opacity = '0';
+        });
+
+        historyList.addEventListener('scroll', () => {
+            const { scrollTop, scrollHeight, clientHeight } = historyList;
+            scrollRotateX = scrollHeight > clientHeight ? (scrollTop / (scrollHeight - clientHeight)) * -25 : 0;
+            applyCardTransform();
+        });
+
+        const openModal = () => modal.classList.remove('opacity-0', 'invisible'),
+              closeModal = () => modal.classList.add('opacity-0', 'invisible');
+
+        cardTypeBtn.addEventListener('click', openModal);
+        closeModalBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+
+        function populateModalOptions() {
+            modalOptions.innerHTML = '';
+            for (const [key, value] of Object.entries(cardTypes)) {
+                const optionBtn = document.createElement('button');
+                optionBtn.className = 'flex items-center gap-3 p-3 bg-slate-700/50 hover:bg-slate-700 rounded-lg transition-colors';
+                optionBtn.dataset.type = key;
+                optionBtn.innerHTML = `<span class="text-2xl w-8 text-center">${value.icon}</span><span>${value.name}</span>`;
+                optionBtn.addEventListener('click', () => { selectCardType(key); closeModal(); });
+                modalOptions.appendChild(optionBtn);
+            }
+        }
+
+        const selectCardType = typeKey => {
+            currentCardType = typeKey;
+            cardTypeName.textContent = cardTypes[typeKey].name;
+            updateMainCardDisplay(generateCardDetails(currentCardType));
+        };
+
+        const luhnCheck = num => {
+            let arr = (num + '').split('').reverse().map(x => parseInt(x));
+            let lastDigit = arr.splice(0, 1)[0];
+            let sum = arr.reduce((acc, val, i) => (i % 2 !== 0 ? acc + val : acc + ((val * 2) % 9) || 9), 0);
+            return (sum + lastDigit) % 10 === 0;
+        };
+        
+        function generateCardDetails(typeKey) {
+            const pattern = cardTypes[typeKey].pattern;
+            let baseNumber = pattern.replace(/#/g, () => Math.floor(Math.random() * 10));
+            if (pattern.includes('[')) {
+                const options = pattern.match(/\[(\d-\d|\d+)\]/)[1];
+                const range = options.split('-').map(Number);
+                const choice = range.length > 1 ? Math.floor(Math.random() * (range[1] - range[0] + 1)) + range[0] : range[0];
+                baseNumber = baseNumber.replace(/\[.*?\]/, choice);
+            }
+            let cardNumber = '';
+            for (let i = 0; i < 10; i++) {
+                let tempNumber = baseNumber.slice(0, -1) + i;
+                if (luhnCheck(tempNumber)) { cardNumber = tempNumber; break; }
+            }
+            if (!cardNumber) cardNumber = baseNumber;
+            const currentYear = new Date().getFullYear();
+            const expYear = currentYear + Math.floor(Math.random() * 6) + 2;
+            const expMonth = String(Math.floor(Math.random() * 12) + 1).padStart(2, '0');
+            const cvv = typeKey === 'amex' ? String(Math.floor(1000 + Math.random() * 9000)) : String(Math.floor(100 + Math.random() * 900));
+            return { number: cardNumber, exp: `${expMonth}/${String(expYear).slice(-2)}`, cvv: cvv };
+        }
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            const quantity = parseInt(quantityInput.value);
+            const maxQuantity = parseInt(quantityInput.max);
+
+            if (quantity > maxQuantity) {
+                showToast(`ניתן ליצור עד ${maxQuantity} כרטיסים בכל פעם.`);
+                quantityInput.classList.add('border-red-500', 'ring-1', 'ring-red-500');
+                setTimeout(() => quantityInput.classList.remove('border-red-500', 'ring-1', 'ring-red-500'), 3000);
+                return;
+            }
+
+            generateBtn.disabled = true;
+            generateBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> GENERATING...`;
+            historyList.innerHTML = '';
+            
+            for (let i = 0; i < quantity; i++) {
+                const cardData = generateCardDetails(currentCardType);
+                if (i === 0) updateMainCardDisplay(cardData);
+                addCardToHistory(cardData, i * 100);
+            }
+
+            setTimeout(() => {
+                generateBtn.disabled = false;
+                generateBtn.innerHTML = `<i class="fa-solid fa-bolt mr-2"></i> GENERATE`;
+            }, quantity * 100 + 200);
+        });
+
+        const updateMainCardDisplay = cardData => {
+            cardBrandLogo.innerHTML = cardTypes[currentCardType].icon;
+            cardDisplayNumber.textContent = cardData.number.match(/.{1,4}/g).join(' ');
+            cardDisplayExp.textContent = cardData.exp;
+        };
+
+        const addCardToHistory = (cardData, delay) => {
+            setTimeout(() => {
+                const item = document.createElement('div');
+                item.className = 'history-item flex items-center justify-between bg-slate-800/40 p-3 rounded-lg opacity-0 translate-y-3 transition-all duration-300';
+                const cardKey = Object.keys(cardTypes).find(key => cardData.number.match(new RegExp(cardTypes[key].pattern.replace(/#+/, '.*').replace(/\[.*?\]/, '[0-9]')))) || '?';
+                item.innerHTML = `<div class="flex items-center gap-3"><span class="text-slate-500 w-5 text-center">${cardTypes[cardKey]?.icon || '<i class="fa-solid fa-question"></i>'}</span><span class="font-mono text-sm">${cardData.number}</span></div><div class="flex items-center gap-2"><span class="text-slate-400 text-xs">${cardData.exp}</span><span class="text-slate-400 text-xs">${cardData.cvv}</span><button class="copy-btn-small text-slate-500 hover:text-sky-400" data-copy="${cardData.number}" title="Copy Number"><i class="fa-regular fa-copy"></i></button></div>`;
+                historyList.prepend(item);
+                requestAnimationFrame(() => item.classList.remove('opacity-0', 'translate-y-3'));
+            }, delay);
+        };
+        
+        document.body.addEventListener('click', e => {
+            const copyBtn = e.target.closest('[data-copy]');
+            if (copyBtn) {
+                navigator.clipboard.writeText(copyBtn.dataset.copy).then(() => {
+                    const originalIcon = copyBtn.innerHTML;
+                    copyBtn.innerHTML = '<i class="fa-solid fa-check text-green-400"></i>';
+                    setTimeout(() => { copyBtn.innerHTML = originalIcon; }, 1500);
+                });
+            }
+        });
+        
+        const showToast = (message) => {
+            toastMessage.textContent = message;
+            toast.classList.remove('invisible', 'opacity-0');
+            setTimeout(() => toast.classList.add('invisible', 'opacity-0'), 3000);
+        };
+
+        // --- Initialization ---
+        populateModalOptions();
+        updateMainCardDisplay(generateCardDetails(currentCardType));
+    </script>
+</body>
+</html>

@@ -4,28 +4,91 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
   <title>יוצר מנדלות אונליין</title>
   <style>
+    :root {
+      --accent: #f97316;
+      --accent-secondary: #fb7185;
+      --canvas-bg: rgba(15, 23, 42, 0.86);
+      --panel-bg: rgba(15, 18, 35, 0.78);
+      --panel-border: rgba(255, 255, 255, 0.08);
+      --text-muted: rgba(226, 232, 240, 0.75);
+    }
+
     body {
       margin: 0;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      background-color: #f4f4f4;
-      font-family: Arial, sans-serif;
-      gap: 40px;
+      gap: clamp(1.5rem, 4vw, 3rem);
+      padding: clamp(1rem, 4vw, 2.5rem);
+      background:
+        radial-gradient(circle at 18% 12%, rgba(249, 115, 22, 0.16), transparent 58%),
+        radial-gradient(circle at 85% 18%, rgba(251, 113, 133, 0.18), transparent 62%),
+        radial-gradient(circle at 50% 88%, rgba(59, 130, 246, 0.18), transparent 68%),
+        #05070f;
+      font-family: 'Heebo', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: #f8fafc;
+      position: relative;
+      overflow: hidden;
     }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      width: clamp(22rem, 36vw, 38rem);
+      height: clamp(22rem, 36vw, 38rem);
+      background: radial-gradient(circle, rgba(249, 115, 22, 0.25), transparent 65%);
+      border-radius: 50%;
+      filter: blur(0px);
+      opacity: 0.55;
+      z-index: -1;
+      animation: floatOrb 20s ease-in-out infinite alternate;
+    }
+
+    body::before {
+      top: -14rem;
+      right: -10rem;
+    }
+
+    body::after {
+      bottom: -16rem;
+      left: -12rem;
+      background: radial-gradient(circle, rgba(251, 113, 133, 0.28), transparent 65%);
+      animation-delay: -9s;
+    }
+
+    @keyframes floatOrb {
+      0% { transform: translate3d(0, 0, 0) scale(1); }
+      50% { transform: translate3d(28px, -24px, 0) scale(1.05); }
+      100% { transform: translate3d(-16px, 16px, 0) scale(1); }
+    }
+
     .canvas-container {
       position: relative;
       display: flex;
       justify-content: center;
-      align-items: flex-start;
+      align-items: center;
+      animation: fadeUp 0.7s ease forwards;
     }
+
     canvas {
       border-radius: 50%;
       cursor: crosshair;
+      background: transparent;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      box-shadow: 0 40px 80px -40px rgba(249, 115, 22, 0.65);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
     }
+
+    canvas:hover {
+      transform: scale(1.01) rotate(-0.4deg);
+      box-shadow: 0 46px 92px -42px rgba(251, 113, 133, 0.7);
+    }
+
     svg {
       position: absolute;
       top: 0;
@@ -34,77 +97,259 @@
       width: 100%;
       height: 100%;
     }
+
     #controls {
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      background-color: #333;
-      color: white;
-      padding: 20px;
-      border-radius: 10px;
-      max-width: 300px;
-      min-width: 200px;
+      gap: 0.85rem;
+      background: var(--panel-bg);
+      border: 1px solid var(--panel-border);
+      border-radius: 1.5rem;
+      padding: clamp(1.25rem, 3vw, 1.75rem);
+      max-width: 320px;
+      min-width: 220px;
+      box-shadow: 0 25px 55px -30px rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(18px);
+      animation: fadeUp 0.75s ease forwards;
     }
+
     #controls label {
-      margin-bottom: 5px;
+      margin-bottom: 6px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
     }
+
     #controls input[type="color"],
-    #controls input[type="range"] {
+    #controls input[type="range"],
+    #controls input[type="number"] {
       width: 100%;
+      border-radius: 0.75rem;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      background: rgba(15, 23, 42, 0.65);
+      color: #f8fafc;
+      padding: 0.4rem 0.6rem;
+      box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.4);
     }
-    button {
-      padding: 10px;
+
+    #controls input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      height: 0.55rem;
+      background: linear-gradient(90deg, rgba(249, 115, 22, 0.85) 50%, rgba(15, 23, 42, 0.6) 0%);
       border: none;
-      border-radius: 5px;
-      background-color: #555;
-      color: white;
       cursor: pointer;
-      font-size: 14px;
+      transition: background 0.3s ease;
     }
+
+    #controls input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 9999px;
+      background: radial-gradient(circle at 30% 30%, #fff 0%, #fecdd3 45%, var(--accent-secondary) 100%);
+      border: 3px solid rgba(15, 23, 42, 0.95);
+      box-shadow: 0 8px 18px -12px rgba(249, 115, 22, 0.85);
+      transition: transform 0.2s ease;
+    }
+
+    #controls input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.1);
+    }
+
+    button {
+      padding: 0.75rem 1rem;
+      border: none;
+      border-radius: 0.85rem;
+      background: linear-gradient(135deg, rgba(249, 115, 22, 0.9), rgba(251, 113, 133, 0.85));
+      color: #0f172a;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    button::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, rgba(255, 255, 255, 0.45), transparent 65%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
     button:hover {
-      background-color: #777;
+      transform: translateY(-2px);
+      box-shadow: 0 16px 32px -20px rgba(249, 115, 22, 0.65);
     }
-  #footer {
-  margin-top: 20px;
-  font-family: Arial, sans-serif;
-  font-size: 14px;
-  color: #333;
-  text-align: center;
-  background-color: #f4f4f4; /* צבע רקע לדף */
-  padding: 10px 0; /* רווחים סביב הטקסט */
-  box-sizing: border-box; /* יכלול את הרווחים בתוך הגודל הכללי */
-  position: relative; /* שינוי מ-fixed ל-relative */
-  width: 100%; /* יתפוס את כל רוחב המסך */
-  bottom: 0; /* שים אותו בתחתית */
-  }
-/* מיקום קבוע של הכפתור בפינה השמאלית התחתונה */
-.floating-button {
-  position: fixed; /* הכפתור צף */
-  bottom: 20px; /* מרחק מהתחתית */
-  left: 20px; /* מרחק מהצד השמאלי */
-  background-color: #333;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-  z-index: 1000; /* הכפתור יישאר מעל כל האלמנטים האחרים */
-}
 
-.floating-button:hover {
-  background-color: #555;
-}
+    button:hover::after {
+      opacity: 0.35;
+    }
 
-.material-icons {
-  font-size: 28px;
-  color: white;
-}
+    #footer {
+      margin-top: 1.5rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-align: center;
+      background: transparent;
+      padding: 0.75rem 1rem;
+      border-radius: 1rem;
+      border: 1px solid rgba(148, 163, 184, 0.1);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 16px 32px -28px rgba(15, 23, 42, 0.85);
+    }
+
+    .floating-button {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.85), rgba(30, 41, 59, 0.85));
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 18px 45px -30px rgba(15, 23, 42, 0.9);
+      cursor: pointer;
+      z-index: 40;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: pulse 3.2s infinite ease-in-out;
+    }
+
+    .floating-button::after {
+      content: "";
+      position: absolute;
+      inset: -12px;
+      border-radius: 50%;
+      border: 1px solid rgba(249, 115, 22, 0.28);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .floating-button:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 24px 52px -24px rgba(249, 115, 22, 0.65);
+    }
+
+    .floating-button:hover::after {
+      opacity: 1;
+    }
+
+    .material-icons {
+      font-size: 28px;
+      color: #f97316;
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 rgba(249, 115, 22, 0); }
+      50% { box-shadow: 0 0 28px rgba(249, 115, 22, 0.45); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .back-home {
+      position: fixed;
+      top: 24px;
+      left: 24px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.55rem 1.2rem;
+      border-radius: 9999px;
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #f8fafc;
+      text-decoration: none;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 18px 36px -24px rgba(249, 115, 22, 0.55);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+      z-index: 50;
+    }
+
+    .back-home:hover {
+      transform: translateY(-3px);
+      background: rgba(15, 23, 42, 0.9);
+      box-shadow: 0 22px 44px -20px rgba(251, 113, 133, 0.6);
+    }
+
+    .page-loader {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(5, 9, 20, 0.85);
+      backdrop-filter: blur(18px);
+      z-index: 80;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
+    }
+
+    .page-loader.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .loader-ring {
+      width: 70px;
+      height: 70px;
+      border-radius: 9999px;
+      border: 4px solid rgba(251, 113, 133, 0.25);
+      border-top-color: rgba(249, 115, 22, 0.85);
+      animation: spin 1s linear infinite, pulse 2.6s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .page-loader p {
+      margin-top: 1.2rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: rgba(248, 250, 252, 0.85);
+    }
+
+    @media (max-width: 960px) {
+      body {
+        flex-direction: column;
+        height: auto;
+      }
+
+      .floating-button {
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 20px;
+      }
+
+      .back-home {
+        left: 16px;
+        top: 16px;
+      }
+    }
   </style>
 </head>
 <body>
+  <a href="../index.html" class="back-home">
+    <i class="material-icons">arrow_back</i>
+    <span>חזרה לכל הכלים</span>
+  </a>
+
+  <div id="pageLoader" class="page-loader">
+    <div class="loader-ring"></div>
+    <p>מכייל את יוצר המנדלות...</p>
+  </div>
+
   <div class="canvas-container">
     <canvas id="mandalaCanvas" width="600" height="600"></canvas>
     <svg id="overlay"></svg>
@@ -170,6 +415,21 @@
     const canvasWidthInput = document.getElementById("canvasWidth");
     const canvasHeightInput = document.getElementById("canvasHeight");
     const resizeCanvasButton = document.getElementById("resizeCanvas");
+
+    const rangeInputs = [sectorsInput, lineWidthInput];
+    const updateRangeGradient = (range) => {
+      const min = Number(range.min || 0);
+      const max = Number(range.max || 100);
+      const value = Number(range.value);
+      const percent = ((value - min) / (max - min)) * 100;
+      range.style.background = `linear-gradient(90deg, rgba(249, 115, 22, 0.85) ${percent}%, rgba(15, 23, 42, 0.6) ${percent}%)`;
+    };
+
+    rangeInputs.forEach((range) => {
+      if (!range) return;
+      updateRangeGradient(range);
+      range.addEventListener('input', () => updateRangeGradient(range));
+    });
 
     // משתנים גלובליים
     let centerX = canvas.width / 2;
@@ -456,7 +716,26 @@ shareButton.addEventListener("click", () => {
     alert("שיתוף לא נתמך בדפדפן זה.");
   }
 });
-    
+
+const pageLoader = document.getElementById('pageLoader');
+if (pageLoader) {
+  const hidePageLoader = () => pageLoader.classList.add('hidden');
+  const showPageLoader = () => pageLoader.classList.remove('hidden');
+
+  window.addEventListener('load', () => setTimeout(hidePageLoader, 260));
+  window.addEventListener('pageshow', (event) => {
+    if (event.persisted) {
+      hidePageLoader();
+    }
+  });
+
+  if (document.readyState === 'complete') {
+    hidePageLoader();
+  }
+
+  window.addEventListener('beforeunload', showPageLoader);
+}
+
     // הגדרת ברירת המחדל - יצירת קווים ראשוניים
     drawSectorLines(sectorsInput.value);
   </script>

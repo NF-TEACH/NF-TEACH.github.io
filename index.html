@@ -154,11 +154,6 @@
             loadingOverlay.classList.add('opacity-0', 'pointer-events-none');
         }
 
-        function hideOverlaySafely() {
-            if (!loadingOverlay) return;
-            requestAnimationFrame(() => hideLoadingOverlay());
-        }
-
         function hydrateStats() {
             toolCountEl.textContent = toolCards.length;
             const lastUpdated = new Date().toLocaleDateString('he-IL', { day: '2-digit', month: '2-digit', year: 'numeric' });
@@ -243,15 +238,7 @@
         }
 
         // --- Initial Loading Overlay ---
-        window.addEventListener('load', hideOverlaySafely);
-
-        window.addEventListener('pageshow', () => {
-            hideOverlaySafely();
-        });
-
-        if (document.readyState === 'complete') {
-            hideOverlaySafely();
-        }
+        window.addEventListener('load', hideLoadingOverlay);
 
         document.addEventListener('DOMContentLoaded', hydrateStats);
     </script>

@@ -11,49 +11,75 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="assets/style.css">
 </head>
-<body class="p-6 sm:p-10">
+<body class="p-6 sm:p-10" data-theme="light">
 
     <div class="max-w-4xl mx-auto">
-        <header class="flex justify-between items-center mb-12 sm:mb-16 fade-in-slide-up">
-            <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900">הכלים של NF</h1>
-            <a href="#" class="text-slate-400 hover:text-slate-600 transition" title="הורד את כל הכלים כ-ZIP (בקרוב)">
-                <i class="fa-solid fa-circle-down text-3xl"></i>
-            </a>
+        <header class="flex flex-col sm:flex-row gap-6 sm:gap-0 sm:justify-between sm:items-center mb-12 sm:mb-16 fade-in-slide-up">
+            <div>
+                <h1 class="text-3xl sm:text-4xl font-extrabold" style="color: var(--text-color);">הכלים של NF</h1>
+                <p class="text-base text-subtle mt-2 max-w-xl">אוסף כלים אינטראקטיביים, מקטגוריות שונות, עם חוויית משתמש חדשנית.</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <button id="themeToggle" class="theme-toggle" type="button" aria-label="החלף מצב צבע">
+                    <span class="theme-indicator">
+                        <i class="fa-solid fa-moon"></i>
+                    </span>
+                    <span class="hidden sm:inline">מצב לילה</span>
+                </button>
+                <a href="#" class="text-slate-400 hover:text-slate-600 transition text-2xl sm:text-3xl" title="הורד את כל הכלים כ-ZIP (בקרוב)">
+                    <i class="fa-solid fa-circle-down"></i>
+                </a>
+            </div>
         </header>
 
         <main>
-            <p class="text-lg text-slate-600 mb-10 fade-in-slide-up" style="animation-delay: 100ms;">ברוכים הבאים לאינדקס הפרויקטים האינטראקטיביים שבניתי.</p>
+            <section class="stats-panel fade-in-slide-up fade-in-delay-1">
+                <article class="stats-card">
+                    <h3>כלים פעילים</h3>
+                    <span id="toolCount">0</span>
+                </article>
+                <article class="stats-card">
+                    <h3>קטגוריות</h3>
+                    <span>4</span>
+                </article>
+                <article class="stats-card">
+                    <h3>עדכון אחרון</h3>
+                    <span id="lastUpdated">—</span>
+                </article>
+            </section>
+
+            <p class="text-lg text-subtle mb-10 fade-in-slide-up fade-in-delay-2">ברוכים הבאים לאינדקס הפרויקטים האינטראקטיביים שבניתי.</p>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 <!-- Project Chimera -->
-                <a href="tools/chimera-ccgen.html" class="tool-card fade-in-slide-up" style="animation-delay: 200ms;">
+                <a href="tools/chimera-ccgen.html" class="tool-card fade-in-slide-up fade-in-delay-2">
                     <button class="download-btn" data-url="tools/chimera-ccgen.html" title="הורד קובץ HTML"><i class="fa-solid fa-download"></i></button>
                     <span class="tag" style="background-color: #e0f2fe; color: #0284c7;">עיצוב עתידני</span>
-                    <h2 class="text-xl font-bold text-slate-800 mb-1">Project Chimera</h2><p class="text-sm text-slate-500">מחולל כרטיסי האשראי לבדיקות אבטחה</p>
+                    <h2 class="text-xl font-bold mb-1" style="color: var(--text-color);">Project Chimera</h2><p class="text-sm text-subtle">מחולל כרטיסי האשראי לבדיקות אבטחה</p>
                 </a>
                 <!-- Password Generator -->
-                <a href="tools/password-gen.html" class="tool-card fade-in-slide-up" style="animation-delay: 300ms;">
+                <a href="tools/password-gen.html" class="tool-card fade-in-slide-up fade-in-delay-3">
                     <button class="download-btn" data-url="tools/password-gen.html" title="הורד קובץ HTML"><i class="fa-solid fa-download"></i></button>
                     <span class="tag" style="background-color: #dcfce7; color: #16a34a;">כלי עזר</span>
-                    <h2 class="text-xl font-bold text-slate-800 mb-1">מחולל סיסמאות</h2><p class="text-sm text-slate-500">יוצר סיסמה רנדומלית עם מגוון אופציות</p>
+                    <h2 class="text-xl font-bold mb-1" style="color: var(--text-color);">מחולל סיסמאות</h2><p class="text-sm text-subtle">יוצר סיסמה רנדומלית עם מגוון אופציות</p>
                 </a>
                 <!-- Mandala Generator -->
-                <a href="tools/mandala-gen.html" class="tool-card fade-in-slide-up" style="animation-delay: 400ms;">
+                <a href="tools/mandala-gen.html" class="tool-card fade-in-slide-up fade-in-delay-4">
                     <button class="download-btn" data-url="tools/mandala-gen.html" title="הורד קובץ HTML"><i class="fa-solid fa-download"></i></button>
                     <span class="tag" style="background-color: #f3e8ff; color: #9333ea;">יצירה דיגיטלית</span>
-                    <h2 class="text-xl font-bold text-slate-800 mb-1">יוצר מנדלות</h2><p class="text-sm text-slate-500"> יצירת מנדלות אונליין להדפסה</p>
+                    <h2 class="text-xl font-bold mb-1" style="color: var(--text-color);">יוצר מנדלות</h2><p class="text-sm text-subtle"> יצירת מנדלות אונליין להדפסה</p>
                 </a>
                 <!-- Matrix Injector -->
-                <a href="tools/matrix-injector.html" class="tool-card fade-in-slide-up" style="animation-delay: 500ms;">
+                <a href="tools/matrix-injector.html" class="tool-card fade-in-slide-up fade-in-delay-5">
                     <button class="download-btn" data-url="tools/matrix-injector.html" title="הורד קובץ HTML"><i class="fa-solid fa-download"></i></button>
                     <span class="tag" style="background-color: #ccfbf1; color: #0d9488;">סימולטור</span>
-                    <h2 class="text-xl font-bold text-slate-800 mb-1">Matrix Injector</h2><p class="text-sm text-slate-500">יוצר כרטיסי אשראי לבדיקות פיתוח בסגנון המטריקס</p>
+                    <h2 class="text-xl font-bold mb-1" style="color: var(--text-color);">Matrix Injector</h2><p class="text-sm text-subtle">יוצר כרטיסי אשראי לבדיקות פיתוח בסגנון המטריקס</p>
                 </a>
                 <!-- Time Tracker -->
-                <a href="tools/time-tracker.html" class="tool-card fade-in-slide-up" style="animation-delay: 600ms;">
+                <a href="tools/time-tracker.html" class="tool-card fade-in-slide-up fade-in-delay-6">
                     <button class="download-btn" data-url="tools/time-tracker.html" title="הורד קובץ HTML"><i class="fa-solid fa-download"></i></button>
                     <span class="tag" style="background-color: #e0e7ff; color: #4f46e5;">אפליקציה</span>
-                    <h2 class="text-xl font-bold text-slate-800 mb-1">שעון נוכחות</h2><p class="text-sm text-slate-500">שעון נוכחות עם חישוב שכר אוטמטי ואופציה לריבוי משתמשים</p>
+                    <h2 class="text-xl font-bold mb-1" style="color: var(--text-color);">שעון נוכחות</h2><p class="text-sm text-subtle">שעון נוכחות עם חישוב שכר אוטמטי ואופציה לריבוי משתמשים</p>
                 </a>
             </div>
         </main>
@@ -88,9 +114,9 @@
     </div>
 
     <!-- ==== Loading Overlay ==== -->
-    <div id="loadingOverlay" class="fixed inset-0 bg-white bg-opacity-70 backdrop-blur-sm flex flex-col items-center justify-center p-4 z-50 opacity-0 invisible transition-opacity duration-300">
-        <div class="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
-        <p class="mt-4 text-lg font-medium text-slate-700">טוען יישום...</p>
+    <div id="loadingOverlay" class="fixed inset-0 flex flex-col items-center justify-center p-4 z-50 visible">
+        <div class="spinner"></div>
+        <p class="mt-4 text-lg font-medium text-subtle">טוען יישום...</p>
     </div>
 
     <script>
@@ -98,6 +124,55 @@
         const downloadButtons = document.querySelectorAll('.download-btn');
         const toolCards = document.querySelectorAll('a.tool-card');
         const loadingOverlay = document.getElementById('loadingOverlay');
+        const themeToggle = document.getElementById('themeToggle');
+        const toolCountEl = document.getElementById('toolCount');
+        const lastUpdatedEl = document.getElementById('lastUpdated');
+
+        // --- Helper Functions ---
+        function setTheme(theme) {
+            document.body.setAttribute('data-theme', theme);
+            const icon = theme === 'dark' ? 'fa-sun' : 'fa-moon';
+            const label = theme === 'dark' ? 'מצב יום' : 'מצב לילה';
+            themeToggle.querySelector('i').className = `fa-solid ${icon}`;
+            themeToggle.querySelector('span.hidden').textContent = label;
+            localStorage.setItem('nf-theme', theme);
+        }
+
+        function toggleTheme() {
+            const current = document.body.getAttribute('data-theme');
+            const nextTheme = current === 'dark' ? 'light' : 'dark';
+            setTheme(nextTheme);
+        }
+
+        function showLoadingOverlay() {
+            loadingOverlay.classList.add('visible');
+            loadingOverlay.classList.remove('opacity-0', 'pointer-events-none');
+        }
+
+        function hideLoadingOverlay() {
+            loadingOverlay.classList.remove('visible');
+            loadingOverlay.classList.add('opacity-0', 'pointer-events-none');
+        }
+
+        function hydrateStats() {
+            toolCountEl.textContent = toolCards.length;
+            const lastUpdated = new Date().toLocaleDateString('he-IL', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            lastUpdatedEl.textContent = lastUpdated;
+        }
+
+        // --- Theme Toggle Logic ---
+        const savedTheme = localStorage.getItem('nf-theme');
+        if (themeToggle) {
+            if (savedTheme) {
+                setTheme(savedTheme);
+            } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                setTheme('dark');
+            } else {
+                setTheme('light');
+            }
+
+            themeToggle.addEventListener('click', toggleTheme);
+        }
 
         // --- Download Buttons Logic ---
         downloadButtons.forEach(button => {
@@ -121,7 +196,7 @@
             if (card.getAttribute('href') !== 'tools/time-tracker.html') {
                 card.addEventListener('click', (event) => {
                     event.preventDefault();
-                    loadingOverlay.classList.add('visible');
+                    showLoadingOverlay();
                     setTimeout(() => {
                         window.location.href = card.href;
                     }, 1200); // 1.2 seconds for the pose
@@ -153,7 +228,7 @@
             modalConfirmBtn.addEventListener('click', () => {
                 hideInfoModal();
                 // After closing the modal, show the loading overlay
-                loadingOverlay.classList.add('visible');
+                showLoadingOverlay();
                 setTimeout(() => {
                     window.location.href = timeTrackerCard.href;
                 }, 1200);
@@ -161,6 +236,11 @@
 
             modalOverlay.addEventListener('click', hideInfoModal);
         }
+
+        // --- Initial Loading Overlay ---
+        window.addEventListener('load', hideLoadingOverlay);
+
+        document.addEventListener('DOMContentLoaded', hydrateStats);
     </script>
 </body>
 </html>

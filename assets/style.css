@@ -1,17 +1,67 @@
 :root {
     --bg-color: #f8fafc;
+    --bg-gradient-start: #e0f2fe;
+    --bg-gradient-end: #ede9fe;
     --card-bg: #ffffff;
     --text-color: #212529; /* Darker text for better contrast */
     --subtle-text: #6c757d;
     --border-color: #dee2e6;
     --accent-color: #0d6efd;
+    --glass-overlay: rgba(255, 255, 255, 0.65);
 }
 
-body { 
-    background-color: var(--bg-color);
+body[data-theme="dark"] {
+    --bg-color: #0f172a;
+    --bg-gradient-start: #1e293b;
+    --bg-gradient-end: #0f172a;
+    --card-bg: rgba(15, 23, 42, 0.85);
+    --text-color: #e2e8f0;
+    --subtle-text: #94a3b8;
+    --border-color: rgba(148, 163, 184, 0.2);
+    --accent-color: #38bdf8;
+    --glass-overlay: rgba(15, 23, 42, 0.65);
+}
+
+body {
+    position: relative;
+    min-height: 100vh;
+    background: radial-gradient(circle at top, var(--bg-gradient-start), transparent 55%),
+                radial-gradient(circle at bottom, var(--bg-gradient-end), transparent 65%),
+                var(--bg-color);
     font-family: 'Heebo', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     color: var(--text-color);
     line-height: 1.6;
+    overflow-x: hidden;
+    transition: background 0.5s ease, color 0.5s ease;
+}
+
+body::before, body::after {
+    content: "";
+    position: fixed;
+    z-index: -1;
+    width: 28rem;
+    height: 28rem;
+    background: radial-gradient(circle, rgba(56, 189, 248, 0.35), transparent 70%);
+    filter: blur(0px);
+    opacity: 0.6;
+    animation: floatGlow 16s infinite linear;
+}
+
+body::before {
+    top: -8rem;
+    left: -6rem;
+}
+
+body::after {
+    bottom: -10rem;
+    right: -6rem;
+    animation-delay: -8s;
+}
+
+@keyframes floatGlow {
+    0% { transform: translate3d(0, 0, 0) scale(1); }
+    50% { transform: translate3d(20px, -30px, 0) scale(1.05); }
+    100% { transform: translate3d(0, 0, 0) scale(1); }
 }
 
 /* Staggered Animation on Load */
@@ -24,8 +74,15 @@ body {
     animation: fadeInSlideUp 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 
+.fade-in-delay-1 { animation-delay: 120ms; }
+.fade-in-delay-2 { animation-delay: 220ms; }
+.fade-in-delay-3 { animation-delay: 320ms; }
+.fade-in-delay-4 { animation-delay: 420ms; }
+.fade-in-delay-5 { animation-delay: 520ms; }
+.fade-in-delay-6 { animation-delay: 620ms; }
+
 /* Tool Card Styles */
-.tool-card { 
+.tool-card {
     position: relative;
     background-color: var(--card-bg);
     border: 1px solid var(--border-color);
@@ -36,12 +93,26 @@ body {
     color: inherit;
     display: block;
     box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.05);
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    overflow: hidden;
+    backdrop-filter: blur(6px);
+    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
 }
-.tool-card:hover { 
-    transform: translateY(-6px); 
+.tool-card:hover {
+    transform: translateY(-6px);
     box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
     border-color: #cbd5e1; /* Slate 300 */
+}
+.tool-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 20% 20%, rgba(56, 189, 248, 0.15), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
+}
+.tool-card:hover::after {
+    opacity: 1;
 }
 .tool-card h2 {
     color: #1e293b; /* Slate 800 */
@@ -67,14 +138,14 @@ body {
 }
 
 /* Download Button (on cards) */
-.download-btn { 
-    position: absolute; 
-    top: 1rem; 
-    left: 1rem; 
-    background-color: #f1f3f5;
+.download-btn {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background-color: rgba(241, 243, 245, 0.95);
     color: var(--subtle-text);
     border: 1px solid var(--border-color);
-    width: 32px; 
+    width: 32px;
     height: 32px; 
     border-radius: 50%; 
     display: flex; 
@@ -84,10 +155,14 @@ body {
     cursor: pointer;
     font-size: 14px;
 }
-.download-btn:hover { 
+.download-btn:hover {
     background-color: var(--accent-color);
     color: white;
     border-color: var(--accent-color);
+}
+
+body[data-theme="dark"] .download-btn {
+    background-color: rgba(30, 41, 59, 0.7);
 }
 
 /* Back Button (on tool pages) */
@@ -118,3 +193,132 @@ body {
     opacity: 1;
     visibility: visible;
 }
+
+#loadingOverlay {
+    background: var(--glass-overlay);
+    color: var(--text-color);
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+#loadingOverlay .spinner {
+    width: 3.75rem;
+    height: 3.75rem;
+    border-radius: 9999px;
+    border-width: 4px;
+    border-style: solid;
+    border-color: rgba(56, 189, 248, 0.25);
+    border-top-color: var(--accent-color);
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 0.9rem;
+    border-radius: 9999px;
+    border: 1px solid var(--border-color);
+    background-color: rgba(255, 255, 255, 0.7);
+    color: var(--text-color);
+    font-weight: 500;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.theme-toggle:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 20px -12px rgba(15, 23, 42, 0.45);
+}
+
+body[data-theme="dark"] .theme-toggle {
+    background-color: rgba(15, 23, 42, 0.75);
+}
+
+.theme-toggle i {
+    font-size: 1.1rem;
+}
+
+.theme-indicator {
+    display: inline-flex;
+    width: 28px;
+    height: 28px;
+    border-radius: 9999px;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(96, 165, 250, 0.35));
+    transition: transform 0.3s ease;
+}
+
+body[data-theme="dark"] .theme-indicator {
+    background: linear-gradient(135deg, rgba(14, 165, 233, 0.15), rgba(56, 189, 248, 0.4));
+}
+
+.theme-toggle:hover .theme-indicator {
+    transform: scale(1.1) rotate(6deg);
+}
+
+.stats-panel {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+}
+
+.stats-card {
+    padding: 1rem 1.2rem;
+    border-radius: 1rem;
+    border: 1px solid var(--border-color);
+    background-color: var(--card-bg);
+    backdrop-filter: blur(6px);
+    box-shadow: 0 6px 18px -12px rgba(15, 23, 42, 0.4);
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.stats-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 36px -16px rgba(15, 23, 42, 0.45);
+}
+
+.stats-card h3 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--subtle-text);
+    margin-bottom: 0.35rem;
+}
+
+.stats-card span {
+    font-size: 1.7rem;
+    font-weight: 700;
+}
+
+body[data-theme="dark"] .tool-card h2 {
+    color: #e2e8f0;
+}
+
+body[data-theme="dark"] .tool-card:hover {
+    border-color: rgba(148, 163, 184, 0.35);
+    box-shadow: 0 20px 45px -18px rgba(15, 23, 42, 0.75);
+}
+
+body[data-theme="dark"] footer {
+    color: var(--subtle-text);
+}
+
+body[data-theme="dark"] #modalContent {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+}
+
+body[data-theme="dark"] #modalContent p {
+    color: var(--subtle-text);
+}
+.text-subtle {
+    color: var(--subtle-text);
+    transition: color 0.3s ease;
+}
+

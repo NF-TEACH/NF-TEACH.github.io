@@ -1,0 +1,1001 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ממיר קישורי Google Drive לקישור ישיר</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="../assets/favicon-96x96.png"
+      sizes="96x96"
+    />
+    <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
+    <link rel="shortcut icon" href="../assets/favicon.ico" />
+    <style>
+      :root {
+        color-scheme: light dark;
+      }
+      body {
+        font-family:
+          "Heebo",
+          "Assistant",
+          "Rubik",
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          sans-serif;
+        background:
+          radial-gradient(
+            circle at 10% 20%,
+            rgba(59, 130, 246, 0.22),
+            transparent 55%
+          ),
+          radial-gradient(
+            circle at 90% 10%,
+            rgba(14, 165, 233, 0.16),
+            transparent 60%
+          ),
+          radial-gradient(
+            circle at 50% 80%,
+            rgba(129, 140, 248, 0.18),
+            transparent 65%
+          ),
+          #f4f7fb;
+        color: #0f172a;
+      }
+      h1,
+      h2,
+      h3 {
+        text-wrap: balance;
+        word-break: break-word;
+        overflow-wrap: anywhere;
+      }
+      .glass-card {
+        backdrop-filter: blur(24px);
+        background: linear-gradient(
+          155deg,
+          rgba(255, 255, 255, 0.92),
+          rgba(255, 255, 255, 0.78)
+        );
+        border: 1px solid rgba(148, 163, 184, 0.25);
+        box-shadow: 0 40px 80px rgba(15, 23, 42, 0.13);
+      }
+      .accent-border {
+        position: relative;
+      }
+      .accent-border::before {
+        content: "";
+        position: absolute;
+        inset: -1px;
+        border-radius: inherit;
+        padding: 1px;
+        background: linear-gradient(
+          135deg,
+          rgba(59, 130, 246, 0.55),
+          rgba(56, 189, 248, 0.45)
+        );
+        -webkit-mask:
+          linear-gradient(#fff 0 0) content-box,
+          linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+      }
+      .hero-card {
+        backdrop-filter: blur(20px);
+        background: rgba(255, 255, 255, 0.85);
+        border-radius: 28px;
+        border: 1px solid rgba(148, 163, 184, 0.28);
+        box-shadow: 0 28px 52px rgba(15, 23, 42, 0.1);
+      }
+      .soft-divider {
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(148, 163, 184, 0.4),
+          transparent
+        );
+      }
+      .floating-badge {
+        background: linear-gradient(
+          130deg,
+          rgba(59, 130, 246, 0.13),
+          rgba(56, 189, 248, 0.13)
+        );
+        border: 1px solid rgba(59, 130, 246, 0.25);
+      }
+      @media (max-width: 640px) {
+        body {
+          background: #eef2ff;
+        }
+        .hero-card {
+          padding: 1.5rem;
+        }
+        .glass-card {
+          padding: 1.5rem;
+        }
+        .glass-card p,
+        .hero-card p {
+          font-size: 0.95rem;
+          line-height: 1.6;
+        }
+      }
+    </style>
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <header class="relative overflow-hidden">
+      <div
+        class="absolute inset-0 opacity-80 pointer-events-none"
+        aria-hidden="true"
+      >
+        <div
+          class="absolute -top-36 -left-24 h-72 w-72 bg-gradient-to-br from-blue-400 via-sky-300 to-cyan-200 rounded-full blur-3xl"
+        ></div>
+        <div
+          class="absolute -bottom-24 -right-32 h-96 w-96 bg-gradient-to-br from-sky-400 via-blue-300 to-indigo-300 rounded-full blur-[120px]"
+        ></div>
+      </div>
+      <div class="relative max-w-6xl mx-auto px-6 py-16 text-slate-900">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div class="space-y-6">
+            <span
+              class="inline-flex items-center gap-2 floating-badge px-4 py-1 rounded-full text-sm font-medium text-slate-700 shadow-sm"
+            >
+              <i class="fas fa-wand-magic-sparkles text-sky-500"></i>
+              קישור מוכן תוך שניות
+            </span>
+            <h1
+              class="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight break-words"
+            >
+              ממיר קישורי Google Drive לקישורי הורדה, תצוגה והטמעה
+            </h1>
+            <p
+              class="text-base sm:text-lg md:text-xl text-slate-600 leading-relaxed max-w-xl"
+            >
+              הזינו קישור שיתוף וקבלו אוטומטית מספר גרסאות נקיות: הורדה ישירה,
+              תצוגה מקדימה והטמעה. בנוסף תקבלו מידע מפורט על הקובץ כדי לוודא
+              בדיוק מה אתם שולחים הלאה.
+            </p>
+            <div class="flex flex-wrap gap-3 text-sm text-slate-600">
+              <div
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 border border-slate-200 shadow-sm"
+              >
+                <i class="fas fa-shield-alt text-blue-500"></i>
+                ללא אחסון חיצוני
+              </div>
+              <div
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 border border-slate-200 shadow-sm"
+              >
+                <i class="fas fa-rocket text-sky-500"></i>
+                מבוסס API רשמי
+              </div>
+              <div
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 border border-slate-200 shadow-sm"
+              >
+                <i class="fas fa-layer-group text-indigo-500"></i>
+                תומך בכל סוגי הקבצים
+              </div>
+            </div>
+          </div>
+          <div class="hero-card p-6 sm:p-8 md:p-10 space-y-6">
+            <h2 class="text-xl sm:text-2xl font-semibold text-slate-900">
+              איך מבטיחים קישור שעובד?
+            </h2>
+            <p class="text-slate-600 leading-relaxed">
+              כל השלבים הקריטיים מרוכזים כאן כדי שלא תתקעו שוב עם קישור שבור אצל
+              הלקוח.
+            </p>
+            <div class="soft-divider"></div>
+            <ol
+              class="space-y-4 text-slate-600 text-base list-decimal list-inside"
+            >
+              <li>
+                לחצו ב-Google Drive על "שיתוף" ובחרו "כל מי שיש לו את הקישור".
+              </li>
+              <li>
+                העתיקו את הקישור המדויק והדביקו אותו כאן. הכלי יזהה לבד את מזהה
+                הקובץ.
+              </li>
+              <li>
+                בחרו את הפורמט הדרוש (הורדה / תצוגה / הטמעה) והעתיקו בלחיצה אחת.
+              </li>
+            </ol>
+            <div
+              class="rounded-2xl bg-blue-50/70 border border-blue-200 text-sm text-blue-900 p-4 flex gap-3"
+            >
+              <i class="fas fa-lightbulb text-blue-400 text-lg mt-0.5"></i>
+              <p>
+                כדי להאיץ את העבודה, נוסיף את ההמרות האחרונות להיסטוריה מקומית
+                במכשיר – תוכלו לחזור אליהן בכל רגע.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-1">
+      <div class="max-w-6xl mx-auto px-6 pb-20">
+        <section
+          class="glass-card accent-border rounded-3xl p-6 sm:p-8 md:p-10"
+        >
+          <h2
+            class="text-xl sm:text-2xl md:text-3xl font-semibold text-slate-900 mb-6 flex items-center gap-3"
+          >
+            <i class="fab fa-google-drive text-emerald-500 text-3xl"></i>
+            התחילו המרה
+          </h2>
+          <p class="text-slate-600 mb-8 leading-relaxed">
+            הזינו כאן קישור שיתוף מלא כפי שקיבלתם מ-Google Drive. הכלי יוודא
+            שהקישור תקין, יבדוק את פרטי הקובץ וייצר עבורכם וריאציות קישור נקיות
+            שניתן לשלב בכל מערכת.
+          </p>
+          <div
+            class="bg-white/75 rounded-2xl p-4 md:p-6 shadow-inner space-y-6"
+          >
+            <div class="flex flex-col lg:flex-row gap-3 lg:gap-4">
+              <div class="flex-1">
+                <label
+                  for="driveLink"
+                  class="block text-sm font-medium text-slate-600 mb-2"
+                  >קישור Google Drive</label
+                >
+                <div class="relative">
+                  <input
+                    type="url"
+                    id="driveLink"
+                    dir="ltr"
+                    placeholder="https://drive.google.com/file/d/12345/view?usp=sharing"
+                    class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-200/60 transition text-slate-800 bg-white"
+                  />
+                  <button
+                    id="pasteBtn"
+                    type="button"
+                    class="absolute inset-y-0 left-2 my-1 px-3 rounded-lg text-sm text-slate-500 bg-slate-100 hover:bg-slate-200 transition"
+                  >
+                    הדבק
+                  </button>
+                </div>
+                <p class="mt-2 text-xs text-slate-400">
+                  הדביקו את כתובת השיתוף בדיוק כפי שקיבלתם אותה. ניתן ללחוץ
+                  Enter כדי להפעיל.
+                </p>
+              </div>
+              <div class="flex lg:flex-col gap-3">
+                <button
+                  id="convertBtn"
+                  type="button"
+                  class="group h-[58px] w-full lg:w-44 px-6 bg-gradient-to-l from-blue-600 via-indigo-600 to-sky-500 hover:from-blue-500 hover:to-sky-400 text-white font-semibold rounded-xl transition-transform duration-300 flex items-center justify-center gap-2 shadow-lg hover:-translate-y-0.5"
+                >
+                  <span class="relative inline-flex items-center gap-2">
+                    <i class="fas fa-bolt text-lg"></i>
+                    המר עכשיו
+                    <span
+                      class="absolute inset-0 rounded-lg bg-white/30 blur-sm opacity-0 group-hover:opacity-100"
+                      style="pointer-events: none"
+                    ></span>
+                  </span>
+                </button>
+                <button
+                  id="clearBtn"
+                  type="button"
+                  class="h-[58px] w-full lg:w-32 px-4 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-100 transition"
+                >
+                  נקה
+                </button>
+              </div>
+            </div>
+
+            <fieldset
+              class="border border-slate-200 rounded-2xl px-4 py-3 bg-white/80"
+            >
+              <legend class="px-2 text-sm font-semibold text-slate-500">
+                בחרו פורמט קישור
+              </legend>
+              <div
+                class="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm text-slate-600"
+              >
+                <label
+                  class="flex items-center gap-3 rounded-xl border border-transparent hover:border-blue-200 bg-slate-50/70 px-3 py-3 transition cursor-pointer"
+                >
+                  <input
+                    type="radio"
+                    name="linkFormat"
+                    value="download"
+                    class="accent-blue-500"
+                    checked
+                  />
+                  <div>
+                    <p class="font-semibold text-slate-800">הורדה ישירה</p>
+                    <p>מפעיל הורדה מיידית בכל דפדפן</p>
+                  </div>
+                </label>
+                <label
+                  class="flex items-center gap-3 rounded-xl border border-transparent hover:border-sky-200 bg-slate-50/70 px-3 py-3 transition cursor-pointer"
+                >
+                  <input
+                    type="radio"
+                    name="linkFormat"
+                    value="preview"
+                    class="accent-sky-500"
+                  />
+                  <div>
+                    <p class="font-semibold text-slate-800">תצוגה מקדימה</p>
+                    <p>קישור לצפייה בתוך Google Drive</p>
+                  </div>
+                </label>
+                <label
+                  class="flex items-center gap-3 rounded-xl border border-transparent hover:border-indigo-200 bg-slate-50/70 px-3 py-3 transition cursor-pointer"
+                >
+                  <input
+                    type="radio"
+                    name="linkFormat"
+                    value="embed"
+                    class="accent-indigo-500"
+                  />
+                  <div>
+                    <p class="font-semibold text-slate-800">קישור הטמעה</p>
+                    <p>לשילוב ב-Iframe באתר או במצגת</p>
+                  </div>
+                </label>
+              </div>
+            </fieldset>
+          </div>
+
+          <div id="resultContainer" class="mt-12 hidden space-y-10">
+            <div
+              class="bg-slate-900 text-white rounded-2xl p-6 md:p-8 shadow-2xl relative overflow-hidden"
+            >
+              <div
+                class="absolute inset-0 opacity-20 pointer-events-none"
+                aria-hidden="true"
+              >
+                <div
+                  class="absolute w-40 h-40 bg-gradient-to-br from-emerald-400/60 to-sky-500/40 rounded-full blur-3xl -top-10 right-0"
+                ></div>
+                <div
+                  class="absolute w-56 h-56 bg-gradient-to-tr from-blue-500/60 to-indigo-500/40 rounded-full blur-3xl -bottom-20 left-6"
+                ></div>
+              </div>
+              <div class="relative space-y-4">
+                <div class="flex flex-wrap items-center gap-3">
+                  <span
+                    class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium"
+                  >
+                    <i class="fas fa-link"></i>
+                    קישור מוכן
+                  </span>
+                  <span
+                    class="inline-flex items-center gap-2 rounded-full bg-white/5 px-4 py-2 text-sm font-medium"
+                  >
+                    <i class="fas fa-clock"></i>
+                    תקף כל עוד הקישור המקורי פעיל
+                  </span>
+                </div>
+                <h3 class="text-xl md:text-2xl font-semibold">
+                  העתיקו את הקישור שנבחר
+                </h3>
+                <div class="flex flex-col md:flex-row gap-3">
+                  <input
+                    type="text"
+                    id="directLink"
+                    readonly
+                    class="flex-grow px-4 py-3 rounded-xl border border-white/20 bg-white/10 text-white focus:outline-none focus:ring-2 focus:ring-emerald-300/70 selection:bg-white selection:text-slate-900"
+                    dir="ltr"
+                  />
+                  <div class="flex gap-3">
+                    <button
+                      id="copyBtn"
+                      type="button"
+                      class="px-5 py-3 rounded-xl bg-white/20 hover:bg-white/30 text-white font-semibold transition flex items-center justify-center"
+                    >
+                      <span class="inline-flex items-center gap-2">
+                        <i class="far fa-copy"></i>
+                        העתק קישור
+                      </span>
+                    </button>
+                    <a
+                      id="downloadBtn"
+                      href="#"
+                      target="_blank"
+                      rel="noopener"
+                      class="px-5 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-white font-semibold transition flex items-center justify-center"
+                    >
+                      <span class="inline-flex items-center gap-2">
+                        <i class="fas fa-arrow-down"></i>
+                        פתח
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              id="fileMetadata"
+              class="bg-white/80 rounded-2xl p-6 shadow-inner"
+            >
+              <div class="flex items-center justify-between flex-wrap gap-3">
+                <h4 class="text-lg font-semibold text-slate-900">
+                  פרטי הקובץ שהומר
+                </h4>
+                <span
+                  class="inline-flex items-center gap-2 text-sm text-slate-500"
+                >
+                  <i class="fas fa-circle-info text-blue-500"></i>
+                  הנתונים מוצגים כפי שהם ב-Google Drive
+                </span>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
+                <div class="flex items-start gap-4">
+                  <div
+                    class="h-11 w-11 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center text-xl"
+                  >
+                    <i class="fas fa-file-alt"></i>
+                  </div>
+                  <div>
+                    <p class="text-sm text-slate-500">שם הקובץ</p>
+                    <p
+                      id="fileName"
+                      class="text-lg font-semibold text-slate-800 break-words"
+                    >
+                      -
+                    </p>
+                  </div>
+                </div>
+                <div class="flex items-start gap-4">
+                  <div
+                    class="h-11 w-11 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-xl"
+                  >
+                    <i class="fas fa-tags"></i>
+                  </div>
+                  <div>
+                    <p class="text-sm text-slate-500">סוג הקובץ</p>
+                    <p
+                      id="fileType"
+                      class="text-lg font-semibold text-slate-800 break-words"
+                    >
+                      -
+                    </p>
+                  </div>
+                </div>
+                <div class="flex items-start gap-4">
+                  <div
+                    class="h-11 w-11 rounded-2xl bg-purple-100 text-purple-600 flex items-center justify-center text-xl"
+                  >
+                    <i class="fas fa-weight-hanging"></i>
+                  </div>
+                  <div>
+                    <p class="text-sm text-slate-500">גודל הקובץ</p>
+                    <p
+                      id="fileSize"
+                      class="text-lg font-semibold text-slate-800 break-words"
+                    >
+                      -
+                    </p>
+                  </div>
+                </div>
+                <div class="flex items-start gap-4">
+                  <div
+                    class="h-11 w-11 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center text-xl"
+                  >
+                    <i class="fas fa-calendar-day"></i>
+                  </div>
+                  <div>
+                    <p class="text-sm text-slate-500">שונה לאחרונה</p>
+                    <p
+                      id="fileModified"
+                      class="text-lg font-semibold text-slate-800 break-words"
+                    >
+                      -
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              id="linkVariations"
+              class="bg-white/75 rounded-2xl p-6 shadow-inner"
+            >
+              <h4 class="text-lg font-semibold text-slate-900 mb-4">
+                כל הקישורים שיצרנו עבורכם
+              </h4>
+              <div class="overflow-x-auto">
+                <table class="min-w-full text-sm text-slate-600">
+                  <thead class="bg-slate-100/80 text-slate-700">
+                    <tr>
+                      <th class="text-right py-3 px-4 font-semibold">סוג</th>
+                      <th class="text-right py-3 px-4 font-semibold">קישור</th>
+                      <th class="text-right py-3 px-4 font-semibold">פעולות</th>
+                    </tr>
+                  </thead>
+                  <tbody id="linkTableBody" class="bg-white/80"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div
+              id="historyContainer"
+              class="bg-slate-50/90 border border-slate-200 rounded-2xl p-6 hidden"
+            >
+              <div
+                class="flex items-center justify-between gap-3 flex-wrap mb-4"
+              >
+                <h4 class="text-lg font-semibold text-slate-800">
+                  היסטוריית המרות אחרונות
+                </h4>
+                <button
+                  id="clearHistoryBtn"
+                  type="button"
+                  class="text-sm text-slate-500 hover:text-red-500 transition"
+                >
+                  נקה היסטוריה
+                </button>
+              </div>
+              <ul
+                id="historyList"
+                class="space-y-3 text-sm text-slate-600"
+              ></ul>
+            </div>
+          </div>
+
+          <div id="errorContainer" class="mt-10 hidden">
+            <div
+              class="rounded-2xl border border-red-200 bg-red-50/80 px-6 py-4 flex items-start gap-3 text-red-700 shadow-inner"
+              role="alert"
+              aria-live="assertive"
+            >
+              <i class="fas fa-circle-exclamation text-xl mt-1"></i>
+              <p
+                id="errorMessage"
+                class="text-base font-medium leading-relaxed"
+              ></p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <script>
+      const API_KEY = "AIzaSyCIP9bS1Togmb8ovDd18fM3QuZ3S3j_J4o";
+      const convertBtn = document.getElementById("convertBtn");
+      const clearBtn = document.getElementById("clearBtn");
+      const pasteBtn = document.getElementById("pasteBtn");
+      const driveLink = document.getElementById("driveLink");
+      const directLink = document.getElementById("directLink");
+      const resultContainer = document.getElementById("resultContainer");
+      const errorContainer = document.getElementById("errorContainer");
+      const errorMessage = document.getElementById("errorMessage");
+      const downloadBtn = document.getElementById("downloadBtn");
+      const fileName = document.getElementById("fileName");
+      const fileType = document.getElementById("fileType");
+      const fileSize = document.getElementById("fileSize");
+      const fileModified = document.getElementById("fileModified");
+      const copyBtn = document.getElementById("copyBtn");
+      const linkTableBody = document.getElementById("linkTableBody");
+      const historyContainer = document.getElementById("historyContainer");
+      const historyList = document.getElementById("historyList");
+      const clearHistoryBtn = document.getElementById("clearHistoryBtn");
+      const linkFormatRadios = document.querySelectorAll(
+        'input[name="linkFormat"]',
+      );
+
+      const MAX_HISTORY = 5;
+      const STORAGE_KEY = "drive-converter-history";
+      let currentLinks = {};
+      let isLoading = false;
+
+      document.addEventListener("DOMContentLoaded", () => {
+        loadHistory();
+      });
+
+      driveLink.addEventListener("input", () => {
+        hideError();
+      });
+
+      driveLink.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          convertLink();
+        }
+      });
+
+      convertBtn.addEventListener("click", convertLink);
+
+      clearBtn.addEventListener("click", () => {
+        driveLink.value = "";
+        directLink.value = "";
+        downloadBtn.href = "#";
+        currentLinks = {};
+        resultContainer.classList.add("hidden");
+        hideError();
+      });
+
+      pasteBtn.addEventListener("click", async () => {
+        if (!navigator.clipboard?.readText) {
+          showError("הדבק נתמך רק מדפדפנים מודרניים במצב מאובטח.");
+          return;
+        }
+        try {
+          const text = await navigator.clipboard.readText();
+          driveLink.value = text.trim();
+          driveLink.dispatchEvent(new Event("input"));
+        } catch (error) {
+          showError("לא הצלחנו לגשת ללוח. אפשר להדביק ידנית (Ctrl+V).");
+        }
+      });
+
+      copyBtn.addEventListener("click", async () => {
+        if (!directLink.value) {
+          showError("אין קישור שניתן להעתיק עדיין. בצעו המרה תחילה.");
+          return;
+        }
+        const original = copyBtn.innerHTML;
+        try {
+          if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(directLink.value);
+          } else {
+            directLink.select();
+            document.execCommand("copy");
+          }
+          copyBtn.innerHTML =
+            '<span class="inline-flex items-center gap-2"><i class="fas fa-check"></i><span>הועתק!</span></span>';
+        } catch (error) {
+          showError("לא הצלחנו להעתיק אוטומטית. העתיקו ידנית מהשדה.");
+        } finally {
+          setTimeout(() => (copyBtn.innerHTML = original), 2200);
+        }
+      });
+
+      clearHistoryBtn.addEventListener("click", () => {
+        localStorage.removeItem(STORAGE_KEY);
+        historyList.innerHTML = "";
+        historyContainer.classList.add("hidden");
+      });
+
+      linkFormatRadios.forEach((radio) => {
+        radio.addEventListener("change", () => {
+          const value = radio.value;
+          if (currentLinks[value]) {
+            applyLink(value);
+          }
+        });
+      });
+
+      async function convertLink() {
+        if (isLoading) return;
+        const link = driveLink.value.trim();
+        resultContainer.classList.add("hidden");
+        hideError();
+
+        if (!link) {
+          showError("אנא הזן קישור Google Drive.");
+          return;
+        }
+        if (!isValidDriveLink(link)) {
+          showError("אנא הזן קישור שיתוף תקף של Google Drive.");
+          return;
+        }
+
+        const originalBtnContent = convertBtn.innerHTML;
+        setLoadingState(true);
+        try {
+          const fileId = extractFileId(link);
+          if (!fileId) {
+            throw new Error("לא ניתן לחלץ את מזהה הקובץ מהקישור.");
+          }
+          currentLinks = buildLinkVariations(fileId);
+          renderLinkTable(currentLinks);
+          const selectedFormat = getSelectedFormat();
+          applyLink(selectedFormat);
+          await hydrateMetadata(fileId);
+          resultContainer.classList.remove("hidden");
+          resultContainer.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+          addToHistory({
+            link,
+            fileId,
+            timestamp: Date.now(),
+            metadata: { ...currentMetadata },
+          });
+        } catch (error) {
+          console.error(error);
+          showError("שגיאה בהמרת הקישור: " + error.message);
+        } finally {
+          setLoadingState(false);
+          convertBtn.innerHTML = originalBtnContent;
+        }
+      }
+
+      function setLoadingState(state) {
+        isLoading = state;
+        if (state) {
+          convertBtn.innerHTML =
+            '<span class="inline-flex items-center gap-2 text-base"><span class="inline-block h-4 w-4 rounded-full border-2 border-white/40 border-t-white animate-spin"></span>מתבצעת המרה...</span>';
+        }
+        convertBtn.classList.toggle("opacity-80", state);
+        convertBtn.classList.toggle("cursor-wait", state);
+        convertBtn.disabled = state;
+      }
+
+      function getSelectedFormat() {
+        const selected = Array.from(linkFormatRadios).find(
+          (radio) => radio.checked,
+        );
+        return selected ? selected.value : "download";
+      }
+
+      function applyLink(format) {
+        const url = currentLinks[format];
+        if (!url) return;
+        directLink.value = url;
+        downloadBtn.href = url;
+        downloadBtn.querySelector("span span")?.remove();
+        const buttonText = format === "download" ? "הורד עכשיו" : "פתח קישור";
+        downloadBtn.querySelector("span").innerHTML =
+          `<i class="fas fa-arrow-up-right-from-square"></i> ${buttonText}`;
+      }
+
+      async function hydrateMetadata(fileId) {
+        try {
+          const metadata = await fetchFileMetadata(fileId, API_KEY);
+          currentMetadata = metadata;
+          displayFileMetadata(metadata);
+        } catch (error) {
+          console.error("שגיאה בקבלת מידע על הקובץ:", error);
+          currentMetadata = {};
+          resetFileMetadata();
+        }
+      }
+
+      function buildLinkVariations(fileId) {
+        return {
+          download: `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media&key=${API_KEY}`,
+          preview: `https://drive.google.com/uc?export=view&id=${fileId}`,
+          embed: `https://drive.google.com/file/d/${fileId}/preview`,
+        };
+      }
+
+      function renderLinkTable(links) {
+        linkTableBody.innerHTML = "";
+        Object.entries(links).forEach(([key, url]) => {
+          const label = getLinkLabel(key);
+          const row = document.createElement("tr");
+          row.innerHTML = `
+                    <td class="py-3 px-4 font-semibold text-slate-800">${label}</td>
+                    <td class="py-3 px-4" dir="ltr">
+                        <div class="truncate max-w-[320px] lg:max-w-xl">${url}</div>
+                    </td>
+                    <td class="py-3 px-4">
+                        <div class="flex flex-wrap gap-2">
+                            <button type="button" class="copy-variation px-3 py-2 rounded-lg bg-blue-100 text-blue-700 hover:bg-blue-200 text-xs" data-format="${key}">העתק</button>
+                            <a href="${url}" target="_blank" rel="noopener" class="px-3 py-2 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 text-xs">פתח</a>
+                        </div>
+                    </td>`;
+          linkTableBody.appendChild(row);
+        });
+
+        linkTableBody.querySelectorAll(".copy-variation").forEach((button) => {
+          button.addEventListener("click", async (event) => {
+            const format = event.currentTarget.dataset.format;
+            const link = currentLinks[format];
+            if (!link) return;
+            try {
+              if (navigator.clipboard && window.isSecureContext) {
+                await navigator.clipboard.writeText(link);
+              } else {
+                copyFallback(link);
+              }
+              animateButton(event.currentTarget);
+            } catch (error) {
+              showError("לא הצלחנו להעתיק אוטומטית. העתיקו ידנית מהטבלה.");
+            }
+          });
+        });
+      }
+
+      function getLinkLabel(type) {
+        switch (type) {
+          case "download":
+            return "הורדה ישירה";
+          case "preview":
+            return "תצוגה מקדימה";
+          case "embed":
+            return "קישור הטמעה";
+          default:
+            return type;
+        }
+      }
+
+      function copyFallback(text) {
+        const textarea = document.createElement("textarea");
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+      }
+
+      function animateButton(button) {
+        button.classList.add("bg-emerald-500", "text-white");
+        button.textContent = "הועתק!";
+        setTimeout(() => {
+          button.classList.remove("bg-emerald-500", "text-white");
+          button.classList.add("bg-blue-100", "text-blue-700");
+          button.textContent = "העתק";
+        }, 1800);
+      }
+
+      function showError(message) {
+        errorMessage.textContent = message;
+        errorContainer.classList.remove("hidden");
+        errorContainer.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+
+      function hideError() {
+        errorContainer.classList.add("hidden");
+        errorMessage.textContent = "";
+      }
+
+      function isValidDriveLink(link) {
+        return (
+          /https?:\/\/drive\.google\.com\//.test(link) &&
+          (link.includes("/file/d/") || link.includes("id="))
+        );
+      }
+
+      function extractFileId(link) {
+        if (link.includes("/file/d/")) {
+          const match = link.match(/\/file\/d\/([^/]+)/);
+          return match && match[1] ? match[1] : null;
+        }
+        try {
+          const url = new URL(link);
+          return url.searchParams.get("id");
+        } catch (error) {
+          return null;
+        }
+      }
+
+      async function fetchFileMetadata(fileId, apiKey) {
+        const response = await fetch(
+          `https://www.googleapis.com/drive/v3/files/${fileId}?key=${apiKey}&fields=name,size,mimeType,modifiedTime`,
+        );
+        if (!response.ok) {
+          throw new Error("נכשל בקבלת מידע על הקובץ");
+        }
+        const data = await response.json();
+        if (data.error) {
+          throw new Error(data.error.message || "שגיאה בקבלת פרטי הקובץ");
+        }
+        return data;
+      }
+
+      let currentMetadata = {};
+
+      function displayFileMetadata(metadata) {
+        fileName.textContent = metadata.name || "לא ידוע";
+        fileType.textContent =
+          getFileTypeDescription(metadata.mimeType) || "לא ידוע";
+        fileSize.textContent = metadata.size
+          ? formatBytes(Number(metadata.size))
+          : "לא ידוע";
+        fileModified.textContent = metadata.modifiedTime
+          ? new Date(metadata.modifiedTime).toLocaleString("he-IL")
+          : "לא ידוע";
+      }
+
+      function resetFileMetadata() {
+        fileName.textContent = "לא ידוע";
+        fileType.textContent = "לא ידוע";
+        fileSize.textContent = "לא ידוע";
+        fileModified.textContent = "לא ידוע";
+      }
+
+      function getFileTypeDescription(mimeType) {
+        if (!mimeType) return null;
+        const typeMap = {
+          "application/vnd.google-apps.document": "Google Docs",
+          "application/vnd.google-apps.spreadsheet": "Google Sheets",
+          "application/vnd.google-apps.presentation": "Google Slides",
+          "application/pdf": "PDF",
+          "image/jpeg": "תמונת JPEG",
+          "image/png": "תמונת PNG",
+          "video/mp4": "וידאו MP4",
+          "audio/mpeg": "אודיו MP3",
+          "text/plain": "קובץ טקסט",
+          "application/zip": "ארכיון ZIP",
+        };
+        return typeMap[mimeType] || mimeType.split("/").pop().toUpperCase();
+      }
+
+      function formatBytes(bytes, decimals = 2) {
+        if (!bytes) return "לא ידוע";
+        if (bytes === 0) return "0 בתים";
+        const k = 1024;
+        const dm = decimals < 0 ? 0 : decimals;
+        const sizes = [
+          "בתים",
+          "קילו-בתים",
+          "מגה-בתים",
+          "גיגה-בתים",
+          "טרה-בתים",
+        ];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return (
+          parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i]
+        );
+      }
+
+      function addToHistory(entry) {
+        if (!entry?.fileId) return;
+        const history = getHistory();
+        const filtered = history.filter((item) => item.fileId !== entry.fileId);
+        filtered.unshift(entry);
+        const trimmed = filtered.slice(0, MAX_HISTORY);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(trimmed));
+        renderHistory(trimmed);
+      }
+
+      function getHistory() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          return raw ? JSON.parse(raw) : [];
+        } catch (error) {
+          console.error("Failed to parse history", error);
+          return [];
+        }
+      }
+
+      function loadHistory() {
+        const history = getHistory();
+        if (history.length) {
+          renderHistory(history);
+        }
+      }
+
+      function renderHistory(history) {
+        historyList.innerHTML = "";
+        if (!history.length) {
+          historyContainer.classList.add("hidden");
+          return;
+        }
+        historyContainer.classList.remove("hidden");
+        history.forEach((item) => {
+          const li = document.createElement("li");
+          const date = new Date(item.timestamp).toLocaleString("he-IL");
+          const name = item.metadata?.name || "ללא שם";
+          li.innerHTML = `
+                    <button type="button" class="w-full text-right px-4 py-3 rounded-xl border border-slate-200 bg-white hover:bg-blue-50 transition">
+                        <div class="flex flex-col gap-1">
+                            <span class="text-sm font-semibold text-slate-800">${name}</span>
+                            <span class="text-xs text-slate-500" dir="ltr">${item.link}</span>
+                            <span class="text-xs text-slate-400">הומר ב-${date}</span>
+                        </div>
+                    </button>`;
+          li.querySelector("button").addEventListener("click", () => {
+            driveLink.value = item.link;
+            driveLink.focus();
+            convertLink();
+          });
+          historyList.appendChild(li);
+        });
+      }
+    </script>
+  </body>
+</html>
